@@ -1,4 +1,5 @@
 import os
+import asyncio          # <-- ADD THIS
 import logging
 
 from dotenv import load_dotenv
@@ -169,6 +170,10 @@ async def on_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
 def main() -> None:
     if not BOT_TOKEN:
         raise RuntimeError("BOT_TOKEN is not set. Please set it in your environment.")
+
+    # FIX: Python 3.14 removed the implicit event loop creation.
+    # We must explicitly create and set an event loop before PTB runs.
+    asyncio.set_event_loop(asyncio.new_event_loop())
 
     app = Application.builder().token(BOT_TOKEN).build()
 
